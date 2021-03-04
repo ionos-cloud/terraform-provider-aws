@@ -1,14 +1,8 @@
 name: release
 on:
-  workflow_dispatch:
-    inputs:
-      version:
-        description: 'Version to publish (e.g. v1.2.3)'
-        required: true
-      branch:
-        description: 'Git branch to checkout'
-        required: false
-        default: f-aws_s3_bucket
+
+  push:
+    - v*-ionos
 
 jobs:
   goreleaser:
@@ -17,17 +11,11 @@ jobs:
       -
         name: Checkout
         uses: actions/checkout@v2
-        with:
-          ref: ${{ github.events.inputs.branch }}
       
       -
         name: Unshallow
         run: git fetch --prune --unshallow
       
-      -
-        name: tag the repo
-        run: git tag ${{ github.events.inputs.version }} && git push --tags
-
       -
         name: Set up Go
         uses: actions/setup-go@v2
